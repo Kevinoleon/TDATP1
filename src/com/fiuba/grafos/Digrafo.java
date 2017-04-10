@@ -16,7 +16,7 @@ public class Digrafo {
 
     Digrafo(Integer vertices) {
         adjList = new ArrayList<>();
-        for (int i = 0; i < adjList.size(); i++)
+        for (int i = 0; i < vertices; i++)
             adjList.add(new ArrayList<>());
     }
 
@@ -53,9 +53,19 @@ public class Digrafo {
      */
     public void agregarArista(Integer src, Integer dst) {
 
+        if (src >= adjList.size())
+            return;
+
+        if (!existeArista(src, dst)) {
+            ArrayList<Arista> verticeAdjList = adjList.get(src);
+            verticeAdjList.add(new Arista(src, dst));
+        }
+    }
+
+    public Boolean existeArista(Integer src, Integer dst) {
+        Boolean existe = false;
         if (src < adjList.size()) {
             ArrayList<Arista> verticeAdjList = adjList.get(src);
-            Boolean existe = false;
 
             //Chequeo que no exista la arista
             Iterator<Arista> it = verticeAdjList.iterator();
@@ -64,11 +74,9 @@ public class Digrafo {
                 if (e.getDst().equals(dst))
                     existe = true;
             }
-            if (!existe)
-                verticeAdjList.add(new Arista(src, dst));
+
         }
-
+        return existe;
     }
-
 
 }
