@@ -64,4 +64,23 @@ public class DigrafoTest {
         assertEquals(Integer.valueOf(4), a.getDst());
     }
 
+    @Test
+    public void transponerGrafo() throws Exception {
+        Digrafo d = new Digrafo(2);
+        d.agregarArista(0, 1);
+        d.agregarArista(1, 0);
+        Digrafo t = d.transponer();
+
+        assertEquals(Integer.valueOf(2), t.cuentaDeAristas());
+        assertEquals(d.cuentaDeVertices(), t.cuentaDeVertices());
+        assertTrue(t.existeArista(1, 1));
+        assertTrue(t.existeArista(0, 0));
+        assertNotSame(d, t);
+    }
+
+    @Test
+    public void DFSDevuelveListaCorrecta() throws Exception {
+
+    }
+
 }

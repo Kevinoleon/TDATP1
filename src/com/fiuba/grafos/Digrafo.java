@@ -86,23 +86,43 @@ public class Digrafo {
     /**
      * Devuelve una lista con los vertices visitados desde el src
      *
-     * @param src
-     * @return
+     * @param src Si es null inicia del vertice 0, si es mayor o igual a cuentaVertices devuelve null
+     * @param ordenDeVertices Opcional, indica el orden en que se deben recorrer los vertices al terminar la
+     *                        exploracion de todos los caminos posibles del vertice actual.
+     * @return Devuelve una lista de listas de vertices. Cada lista es una compponente conexa visitada con DFS
      */
-    public ArrayList<Integer> DFS(Integer src) {
+    public ArrayList<ArrayList<Integer>> DFS(Integer src, ArrayList<Integer> ordenDeVertices) {
+
+        if (src == null)
+            src = 0;
+
+        if (ordenDeVertices != null && ordenDeVertices.size() != this.cuentaDeVertices())
+            ordenDeVertices = null;
 
         if (src >= this.cuentaDeVertices())
             return null;
 
-        ArrayList<Integer> listaVerticesVisitados = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> listaVerticesVisitados = new ArrayList<>();
         Boolean[] verticeVisitado = new Boolean[this.cuentaDeVertices()];
 
         //Hago DFS desde el vertice indicado
-        DFS_Visitar(src, listaVerticesVisitados, verticeVisitado);
+        ArrayList<Integer> componenteConexa1 = new ArrayList<>();
+        listaVerticesVisitados.add(componenteConexa1);
+        DFS_Visitar(src, componenteConexa1, verticeVisitado);
 
+        //Hago DFS desde los demas vertices
+        for (int i = 0; i < this.cuentaDeVertices(); i++) {
+            //Si hay orden de vertices voy chequeando en ese orden, sino orden natural.
+            int proximoVertice = (ordenDeVertices != null) ? ordenDeVertices.get(i) : i;
+
+            if (!verticeVisitado[proximoVertice]) {
+                ArrayList<Integer> componenteConexa = new ArrayList<>();
+                listaVerticesVisitados.add(componenteConexa);
+                DFS_Visitar(proximoVertice, componenteConexa, verticeVisitado);
+            }
+
+        }
         return listaVerticesVisitados;
-
-
     }
 
     private void DFS_Visitar(Integer v, ArrayList<Integer> listaVerticesVisitados, Boolean[] verticeVisitado) {
