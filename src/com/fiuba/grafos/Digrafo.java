@@ -1,6 +1,7 @@
 package com.fiuba.grafos;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -16,12 +17,14 @@ public class Digrafo {
      * Cada elemento contiene la lista de arsitas del vertice
      * referenciado
      */
-    private ArrayList<ArrayList<Arista>> adjList;
+    private ArrayList<HashMap<Integer, Arista>> adjList;
+    private Integer cuentaAristas = 0;
 
     public Digrafo(Integer vertices) {
-        adjList = new ArrayList<>();
-        for (int i = 0; i < vertices; i++)
-            adjList.add(new ArrayList<>());
+        adjList = new ArrayList<>(vertices);
+        for (int i = 0; i < vertices; i++) {
+            adjList.add(new HashMap<Integer, Arista>());
+        }
     }
 
     /**
@@ -35,11 +38,7 @@ public class Digrafo {
      * Devuelve la cantidad de Aristas del Grafoo
      */
     public Integer cuentaDeAristas() {
-        Integer aux = 0;
-        for (ArrayList lista : adjList) {
-            aux += lista.size();
-        }
-        return aux;
+        return cuentaAristas;
     }
 
     /**
@@ -49,7 +48,9 @@ public class Digrafo {
     public Iterator<Arista> getAdjList(Integer vertice) {
         if (vertice >= adjList.size())
             return null;
-        return adjList.get(vertice).iterator();
+
+        return adjList.get(vertice).values().iterator();
+
     }
 
     /**
@@ -57,28 +58,21 @@ public class Digrafo {
      */
     public void agregarArista(Integer src, Integer dst) {
 
-        if (src >= adjList.size())
+        if (src >= this.cuentaDeVertices() || dst >= this.cuentaDeVertices())
             return;
 
-        if (!existeArista(src, dst)) {
-            ArrayList<Arista> verticeAdjList = adjList.get(src);
-            verticeAdjList.add(new Arista(src, dst));
+        HashMap aux = adjList.get(src);
+        if (!aux.containsKey(dst)) {
+            aux.put(dst, new Arista(src, dst));
+            cuentaAristas++;
         }
+
     }
 
     public Boolean existeArista(Integer src, Integer dst) {
         Boolean existe = false;
-        if (src < adjList.size()) {
-            ArrayList<Arista> verticeAdjList = adjList.get(src);
-
-            //Chequeo que no exista la arista
-            Iterator<Arista> it = verticeAdjList.iterator();
-            while (it.hasNext() && !existe) {
-                Arista e = it.next();
-                if (e.getDst().equals(dst))
-                    existe = true;
-            }
-
+        if (src < this.cuentaDeVertices()) {
+            existe = this.adjList.get(src).containsKey(dst);
         }
         return existe;
     }

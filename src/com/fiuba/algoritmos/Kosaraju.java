@@ -2,9 +2,13 @@ package com.fiuba.algoritmos;
 
 import com.fiuba.grafos.Digrafo;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -14,7 +18,32 @@ public class Kosaraju {
     private Digrafo d;
     private ArrayList<ArrayList<Integer>> CFC;
 
-    Kosaraju(Digrafo d) {
+    public Kosaraju(Path path) {
+        List<String> file = new ArrayList<>();
+        long time = System.nanoTime();
+        try {
+            file = Files.readAllLines(path);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        time = System.nanoTime() - time;
+        time = TimeUnit.NANOSECONDS.toMillis(time);
+        System.out.println("Kosaraju - File " + path.toString() + " - Parseo Completo en " + time + " mSeg.");
+
+        time = System.nanoTime();
+        Digrafo d = new Digrafo(Integer.parseInt(file.get(0)));
+        for (int i = 2; i < file.size(); i++) {
+            String[] aux = file.get(i).split(" ");
+            d.agregarArista(Integer.parseInt(aux[0]), Integer.parseInt(aux[1]));
+        }
+        time = System.nanoTime() - time;
+        time = TimeUnit.NANOSECONDS.toSeconds(time);
+        System.out.println("Kosaraju - File " + path.toString() + " - Digrafo Completo en " + time + " mSeg.");
+
+        calcKosaraju(d);
+    }
+
+    private void calcKosaraju(Digrafo d) {
         this.d = d;
         long time = System.nanoTime();
         ArrayList<ArrayList<Integer>> componentes = d.DFS();

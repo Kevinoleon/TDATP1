@@ -22,7 +22,7 @@ public class DigrafoTest {
     public void cuentaDeAristas() throws Exception {
         Digrafo d = new Digrafo(5);
         d.agregarArista(1, 4);
-        d.agregarArista(1, 5);
+        d.agregarArista(1, 2);
         d.agregarArista(0, 3);
         assertEquals(Integer.valueOf(3), d.cuentaDeAristas());
 
