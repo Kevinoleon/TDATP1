@@ -18,7 +18,7 @@ public class Digrafo {
      */
     private ArrayList<ArrayList<Arista>> adjList;
 
-    Digrafo(Integer vertices) {
+    public Digrafo(Integer vertices) {
         adjList = new ArrayList<>();
         for (int i = 0; i < vertices; i++)
             adjList.add(new ArrayList<>());
@@ -94,7 +94,7 @@ public class Digrafo {
     public ArrayList<ArrayList<Integer>> DFS(Integer src, ArrayList<Integer> ordenDeVertices) {
 
         if (src == null)
-            src = 0;
+            src = (ordenDeVertices != null) ? ordenDeVertices.get(0) : 0;
 
         if (ordenDeVertices != null && ordenDeVertices.size() != this.cuentaDeVertices())
             ordenDeVertices = null;
@@ -103,7 +103,7 @@ public class Digrafo {
             return null;
 
         ArrayList<ArrayList<Integer>> listaVerticesVisitados = new ArrayList<>();
-        Boolean[] verticeVisitado = new Boolean[this.cuentaDeVertices()];
+        boolean[] verticeVisitado = new boolean[this.cuentaDeVertices()];
 
         //Hago DFS desde el vertice indicado
         ArrayList<Integer> componenteConexa1 = new ArrayList<>();
@@ -125,7 +125,11 @@ public class Digrafo {
         return listaVerticesVisitados;
     }
 
-    private void DFS_Visitar(Integer v, ArrayList<Integer> listaVerticesVisitados, Boolean[] verticeVisitado) {
+    public ArrayList<ArrayList<Integer>> DFS() {
+        return DFS(null, null);
+    }
+
+    private void DFS_Visitar(Integer v, ArrayList<Integer> listaVerticesVisitados, boolean[] verticeVisitado) {
 
         verticeVisitado[v] = true;
         listaVerticesVisitados.add(v);
@@ -135,7 +139,7 @@ public class Digrafo {
         while (it.hasNext()) {
             Arista a = it.next();
             if (!verticeVisitado[a.getDst()]) {
-                DFS_Visitar(v, listaVerticesVisitados, verticeVisitado);
+                DFS_Visitar(a.getDst(), listaVerticesVisitados, verticeVisitado);
             }
         }
     }

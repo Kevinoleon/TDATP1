@@ -2,6 +2,7 @@ package com.fiuba.grafos;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import static org.junit.Assert.*;
@@ -80,6 +81,47 @@ public class DigrafoTest {
 
     @Test
     public void DFSDevuelveListaCorrecta() throws Exception {
+        Digrafo d = new Digrafo(4);
+        d.agregarArista(0, 1);
+        d.agregarArista(1, 2);
+
+        //Componentes conexas 0->1->2 y 3
+        ArrayList<ArrayList<Integer>> componentesConexas = d.DFS(null, null);
+
+        assertEquals(Integer.valueOf(2), (Integer) componentesConexas.size());
+        //Chequeo Componente 1
+        assertEquals(Integer.valueOf(3), (Integer) componentesConexas.get(0).size());
+        assertEquals(Integer.valueOf(0), (Integer) componentesConexas.get(0).get(0));
+        assertEquals(Integer.valueOf(1), (Integer) componentesConexas.get(0).get(1));
+        assertEquals(Integer.valueOf(2), (Integer) componentesConexas.get(0).get(2));
+        //Chequeo Componente 2
+        assertEquals(Integer.valueOf(1), (Integer) componentesConexas.get(1).size());
+        assertEquals(Integer.valueOf(3), (Integer) componentesConexas.get(1).get(0));
+
+    }
+
+    @Test
+    public void DFSDevuelveListaCorrectaConOrden() throws Exception {
+        Digrafo d = new Digrafo(4);
+        d.agregarArista(0, 1);
+        d.agregarArista(1, 2);
+        ArrayList<Integer> orden = new ArrayList<>();
+        orden.add(3);
+        orden.add(0);
+        orden.add(1);
+        orden.add(2);
+        //Componentes conexas 0->1->2 y 3
+        ArrayList<ArrayList<Integer>> componentesConexas = d.DFS(null, orden);
+
+        assertEquals(Integer.valueOf(2), (Integer) componentesConexas.size());
+        //Chequeo Componente 1
+        assertEquals(Integer.valueOf(3), (Integer) componentesConexas.get(1).size());
+        assertEquals(Integer.valueOf(0), (Integer) componentesConexas.get(1).get(0));
+        assertEquals(Integer.valueOf(1), (Integer) componentesConexas.get(1).get(1));
+        assertEquals(Integer.valueOf(2), (Integer) componentesConexas.get(1).get(2));
+        //Chequeo Componente 2
+        assertEquals(Integer.valueOf(1), (Integer) componentesConexas.get(0).size());
+        assertEquals(Integer.valueOf(3), (Integer) componentesConexas.get(0).get(0));
 
     }
 
