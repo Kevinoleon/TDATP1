@@ -9,7 +9,7 @@ public class Main {
 	// write your code here
         //TODO: Write main
 
-        Path path = Paths.get("data/Kosaraju/d4.txt");
+        Path path = Paths.get("data/Kosaraju/d6.txt");
         Kosaraju k = new Kosaraju(path);
 
     }

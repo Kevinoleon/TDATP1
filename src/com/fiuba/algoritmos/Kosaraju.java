@@ -17,10 +17,12 @@ import java.util.concurrent.TimeUnit;
 public class Kosaraju {
     private Digrafo d;
     private ArrayList<ArrayList<Integer>> CFC;
+    private long totalTime;
 
     public Kosaraju(Path path) {
         List<String> file = new ArrayList<>();
         long time = System.nanoTime();
+        totalTime = time;
         try {
             file = Files.readAllLines(path);
         } catch (IOException e) {
@@ -62,27 +64,27 @@ public class Kosaraju {
                 orden.add(v);
             }
         }
+
+        Collections.reverse(orden); //O(n)
         time = System.nanoTime() - time;
         time = TimeUnit.NANOSECONDS.toMillis(time);
         System.out.println("Kosaraju - Algo " + " - Ordenamiento Completo en " + time + " mSeg.");
         time = System.nanoTime();
 
-        Collections.reverse(orden); //O(n)
+        Digrafo t = d.invertirArcos();
         time = System.nanoTime() - time;
         time = TimeUnit.NANOSECONDS.toMillis(time);
-        System.out.println("Kosaraju - Algo " + " - Inversion Completo en " + time + " mSeg.");
-        time = System.nanoTime();
-
-        Digrafo t = d.transponer();
-        time = System.nanoTime() - time;
-        time = TimeUnit.NANOSECONDS.toMillis(time);
-        System.out.println("Kosaraju - Algo " + " - Transpuesto en " + time + " mSeg.");
+        System.out.println("Kosaraju - Algo " + " - Inversion en " + time + " mSeg.");
         time = System.nanoTime();
 
         this.CFC = t.DFS(null, orden);
         time = System.nanoTime() - time;
+        totalTime = System.nanoTime() - totalTime;
+        totalTime = TimeUnit.NANOSECONDS.toSeconds(totalTime);
         time = TimeUnit.NANOSECONDS.toMillis(time);
         System.out.println("Kosaraju - Algo " + " - Segundo DFS Completo en " + time + " mSeg.");
+        System.out.println("Kosaraju - Algo " + " Finalizado OK en " + totalTime + " Seg.");
+        System.out.println("Kosaraju - Algo " + " CFC: " + CFC.size());
     }
 
     public Integer cuentaComponentesConexas() {

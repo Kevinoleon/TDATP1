@@ -18,12 +18,14 @@ public class Digrafo {
      * referenciado
      */
     private ArrayList<HashMap<Integer, Arista>> adjList;
-    private Integer cuentaAristas = 0;
+    private int cuentaAristas = 0;
+    private int cuentaVertices;
 
-    public Digrafo(Integer vertices) {
+    public Digrafo(int vertices) {
         adjList = new ArrayList<>(vertices);
+        cuentaVertices = vertices;
         for (int i = 0; i < vertices; i++) {
-            adjList.add(new HashMap<Integer, Arista>());
+            adjList.add(new HashMap<>());
         }
     }
 
@@ -31,7 +33,7 @@ public class Digrafo {
      * Devuelve la cantidad de Vertices del Grafo
      */
     public Integer cuentaDeVertices() {
-        return adjList.size();
+        return cuentaVertices;
     }
 
     /**
@@ -45,7 +47,7 @@ public class Digrafo {
      * Devuelve un iterador sobre la lista de adyacencia del vertice indicado.
      * Devuelve null si el vertice no existe
      */
-    public Iterator<Arista> getAdjList(Integer vertice) {
+    public Iterator<Arista> getAdjList(int vertice) {
         if (vertice >= adjList.size())
             return null;
 
@@ -56,22 +58,19 @@ public class Digrafo {
     /**
      * Agrega una Arista si el src esta dentro de los vertices del grafo y la arista no existe
      */
-    public void agregarArista(Integer src, Integer dst) {
+    public void agregarArista(int src, int dst) {
 
-        if (src >= this.cuentaDeVertices() || dst >= this.cuentaDeVertices())
+        if (src >= cuentaVertices || dst >= cuentaVertices)
             return;
 
-        HashMap aux = adjList.get(src);
-        if (!aux.containsKey(dst)) {
-            aux.put(dst, new Arista(src, dst));
+        Arista previa = adjList.get(src).put(dst, new Arista(src, dst));
+        if (previa == null)
             cuentaAristas++;
-        }
-
     }
 
-    public Boolean existeArista(Integer src, Integer dst) {
+    public Boolean existeArista(int src, int dst) {
         Boolean existe = false;
-        if (src < this.cuentaDeVertices()) {
+        if (src < cuentaVertices) {
             existe = this.adjList.get(src).containsKey(dst);
         }
         return existe;
@@ -139,12 +138,27 @@ public class Digrafo {
     }
 
     public Digrafo transponer() {
-        Digrafo d = new Digrafo(this.cuentaDeVertices());
+        Digrafo d = new Digrafo(cuentaVertices);
 
-        for (int src = 0; src < this.cuentaDeVertices(); src++) {
-            for (int dst = 0; dst < this.cuentaDeVertices(); dst++) {
+        for (int src = 0; src < cuentaVertices; src++) {
+            //System.out.println("Transponiendo vertice: " + src);
+            for (int dst = 0; dst < cuentaVertices; dst++) {
                 if (!existeArista(src, dst))
                     d.agregarArista(src, dst);
+            }
+        }
+        return d;
+    }
+
+    public Digrafo invertirArcos() {
+        Digrafo d = new Digrafo(cuentaVertices);
+
+        for (int i = 0; i < cuentaVertices; i++) {
+            //System.out.println("Transponiendo vertice: " + i);
+            Iterator<Arista> it = getAdjList(i);
+            while (it.hasNext()) {
+                Arista aux = it.next();
+                d.agregarArista(aux.getDst(), aux.getSrc());
             }
         }
         return d;
