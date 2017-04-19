@@ -25,7 +25,8 @@ public class Grafo {
      * Devuelve la cantidad de Aristas del Grafoo
      */
     public Integer getCantidadDeAristas() {
-        return this.digrafo.cuentaDeAristas();
+        
+        return this.digrafo.cuentaDeAristas() / 2;
     }
 
     /**
@@ -33,6 +34,7 @@ public class Grafo {
      * Devuelve null si el vertice no existe
      */
     public Iterator<Arista> getAdyacentes(int vertice) {
+
         return this.digrafo.getAdjList(vertice);
     }
 

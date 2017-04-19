@@ -1,7 +1,8 @@
 package com.fiuba.tarjan;
 
-import java.util.Set;
-import java.util.HashSet;
+import java.util.*;
+
+import com.fiuba.grafos.Arista;
 import com.fiuba.grafos.Grafo;
 
 /**
@@ -26,6 +27,38 @@ public class Tarjan {
     }
 
     private void calculateArticulationPoints() {
-        this.articulationPoints = new HashSet<Integer>();
+
+        Stack<Integer> stack = new Stack<>();
+        Set<Integer> puntosDeArticulacion = new HashSet<>();
+        boolean[] isNodoVisitado = new boolean[this.grafo.getCantidadDeVertices()];
+
+        // Inicio DFS en un vértice predefinido
+        int raiz = 0;
+        stack.push(raiz);
+        puntosDeArticulacion.add(raiz);
+
+        while (!stack.empty()) {
+            int nodo = stack.pop();
+            if (!isNodoVisitado[nodo]) {
+
+                // Chequeo si es punto de articulación
+                if (this.isPuntoDeArticulacion(nodo)) {
+                    puntosDeArticulacion.add(nodo);
+                }
+
+                isNodoVisitado[nodo] = true;
+                Iterator<Arista> aristas = this.grafo.getAdyacentes(nodo);
+                while (aristas.hasNext()) {
+                    Arista arista = aristas.next();
+                    stack.push(arista.getDst());
+                }
+            }
+        }
+
+        this.articulationPoints = puntosDeArticulacion;
+    }
+
+    private boolean isPuntoDeArticulacion(int nodo) {
+        return true;
     }
 }
