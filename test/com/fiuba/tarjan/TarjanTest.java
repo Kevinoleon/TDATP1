@@ -31,8 +31,8 @@ public class TarjanTest {
         Tarjan tarjan = new Tarjan(grafo);
         Set<Integer> resultado = tarjan.getArticulationPoints();
         Set<Integer> esperado = new HashSet<>(2);
+        esperado.add(1);
         esperado.add(2);
-        esperado.add(3);
 
         assertEquals(esperado, resultado);
     }
@@ -49,9 +49,9 @@ public class TarjanTest {
         */
         Grafo grafo = new Grafo(5);
         grafo.agregarArista(0, 1);
-        grafo.agregarArista(1, 2);
-        grafo.agregarArista(2, 0);
+        grafo.agregarArista(0, 2);
         grafo.agregarArista(0, 3);
+        grafo.agregarArista(1, 2);
         grafo.agregarArista(3, 4);
 
         Tarjan tarjan = new Tarjan(grafo);

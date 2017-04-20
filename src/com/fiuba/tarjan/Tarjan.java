@@ -15,6 +15,7 @@ public class Tarjan {
 
     public Tarjan(Grafo g) {
         this.grafo = g;
+        this.articulationPoints = new HashSet<Integer>();
         this.calculateArticulationPoints();
     }
 
@@ -23,42 +24,66 @@ public class Tarjan {
      * @return   El conjunto de vértices que son puntos de articulación.
      */
     public Set<Integer> getArticulationPoints()  {
+
         return this.articulationPoints;
     }
 
     private void calculateArticulationPoints() {
 
-        Stack<Integer> stack = new Stack<>();
-        Set<Integer> puntosDeArticulacion = new HashSet<>();
-        boolean[] isNodoVisitado = new boolean[this.grafo.getCantidadDeVertices()];
+        // Inicio el recorrido del grafo en un vértice predefinido
+        int numeroVisita = 0;
+        VerticeTarjan inicio = new VerticeTarjan(0, -1, numeroVisita, numeroVisita);
 
-        // Inicio DFS en un vértice predefinido
-        int raiz = 0;
-        stack.push(raiz);
-        puntosDeArticulacion.add(raiz);
+        Map<Integer, VerticeTarjan> infoVerticesVisitados = new HashMap<>();
+        infoVerticesVisitados.put(inicio.id, inicio);
+        this.findArticulationPoints(inicio, numeroVisita, infoVerticesVisitados);
+    }
 
-        while (!stack.empty()) {
-            int nodo = stack.pop();
-            if (!isNodoVisitado[nodo]) {
+    /**
+     * Se recorre el grafo usando DFS a fin de identificar los puntos de articulación del grafo.
+     */
+    private void findArticulationPoints(VerticeTarjan verticeTarjan, int numeroVisita, Map<Integer, VerticeTarjan> infoVerticesVisitados) {
 
-                // Chequeo si es punto de articulación
-                if (this.isPuntoDeArticulacion(nodo)) {
-                    puntosDeArticulacion.add(nodo);
+        numeroVisita++;
+        int hijosDelVertice = 0;
+        boolean isArticulationPoint = false;
+
+        Iterator<Arista> aristas = this.grafo.getAdyacentes(verticeTarjan.id);
+
+        while (aristas.hasNext()) {
+            int verticeAdyacenteId = aristas.next().getDst();
+
+            // Chequeo que la arista no vaya hacia el mismo vértice
+            if (verticeAdyacenteId == verticeTarjan.id) {
+                continue;
+            }
+
+            // Chequeo que el nodo adyacente no haya sido visitado
+            VerticeTarjan adyacente = infoVerticesVisitados.get(verticeAdyacenteId);
+            if (adyacente == null) {
+                hijosDelVertice++;
+                VerticeTarjan hijoAdyacente = new VerticeTarjan(verticeAdyacenteId, verticeTarjan.id, numeroVisita, numeroVisita);
+                infoVerticesVisitados.put(verticeAdyacenteId, hijoAdyacente);
+                this.findArticulationPoints(hijoAdyacente, numeroVisita, infoVerticesVisitados);
+
+                if (verticeTarjan.numeroVisita <= hijoAdyacente.numeroBajo) {
+                    isArticulationPoint = true;
+                } else {
+                    verticeTarjan.numeroBajo = Math.min(verticeTarjan.numeroBajo, hijoAdyacente.numeroBajo);
                 }
-
-                isNodoVisitado[nodo] = true;
-                Iterator<Arista> aristas = this.grafo.getAdyacentes(nodo);
-                while (aristas.hasNext()) {
-                    Arista arista = aristas.next();
-                    stack.push(arista.getDst());
-                }
+            } else {
+                verticeTarjan.numeroBajo = Math.min(verticeTarjan.numeroBajo, adyacente.numeroVisita);
             }
         }
 
-        this.articulationPoints = puntosDeArticulacion;
-    }
-
-    private boolean isPuntoDeArticulacion(int nodo) {
-        return true;
+        // Es un punto de articulación si:
+        // - Luego del recorrido DFS: numeroVisita <= numeroBajo (hallado en el loop)
+        // - Es raiz y tiene más de 2 hijos
+        if(verticeTarjan.padreId == -1 && hijosDelVertice >= 2
+            || verticeTarjan.padreId != -1 && isArticulationPoint) {
+            this.articulationPoints.add(verticeTarjan.id);
+        }
     }
 }
+
+
