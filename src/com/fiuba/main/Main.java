@@ -13,9 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 public class Main {
@@ -89,8 +87,11 @@ public class Main {
     public static void resolveResidences(){
 
         for(int i=100;i<=10000;i*=10) {
+            HashMap<Integer, ArrayList<Integer>> listaDePreferenciasPretendientes = CreateRandomUniqueMatrix(i, i);
+            HashMap<Integer, ArrayList<Integer>> listaDePreferenciasOferentes = CreateRandomUniqueMatrix(i, i);
+
             long tiempoDelAlgoritmo = System.nanoTime();
-            GaleShapley gs = new GaleShapley(CreateRandomUniqueMatrix(i, i), CreateRandomUniqueMatrix(i, i));
+            GaleShapley gs = new GaleShapley(listaDePreferenciasPretendientes, listaDePreferenciasOferentes);
             tiempoDelAlgoritmo = System.nanoTime() - tiempoDelAlgoritmo;
             System.out.println( "Gale Shapley n=m=" + String.valueOf(i) + ". Tiempo de Ejecucion: " +
                                 TimeUnit.NANOSECONDS.toMillis(tiempoDelAlgoritmo) + " mSeg.");

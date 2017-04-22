@@ -45,6 +45,7 @@ public class GaleShapley {
         // y todos los pretendientes tienen a las oferentes en su lista de preferencia (y viceversa)
         // puedo asumir que no se va a dar el caso donde un pretendiente quede libre aún luego de proponersele a todos los oferentes
         while (!pretendientesLibres.empty()) {
+
             int pretendiente = pretendientesLibres.pop();
             int oferente = pretendientesPosiblesOferentes.get(pretendiente).pop();
 
@@ -53,19 +54,21 @@ public class GaleShapley {
 
             if (actualPretendienteDeOferente == null) {
 
-                // No está en pareja. Ahora lo va a estar con pretendiente
-                actualPretendienteDeOferentes[oferente] = pretendiente;
+                // No está en pareja. Agrego la pareja de oferente-pretendiente
                 parejas.put(pretendiente, oferente);
+                actualPretendienteDeOferentes[oferente] = pretendiente;
             } else {
 
                 // Chequeo si el pretendiente es mejor pareja que la actual
                 ArrayList<Integer> preferenciasOferente = this.listaDePreferenciasOferentes.get(oferente);
                 if (preferenciasOferente.indexOf(pretendiente) > preferenciasOferente.indexOf(actualPretendienteDeOferente)) {
 
-                    // Es mejor, cambio la pareja y libero al pretendiente anterior
+                    // Es mejor, libero al pretendiente anterior
                     parejas.remove(actualPretendienteDeOferente);
-                    parejas.put(pretendiente, oferente);
                     pretendientesLibres.push(actualPretendienteDeOferente);
+
+                    // Y agrego la pareja de oferente-pretendiente
+                    parejas.put(pretendiente, oferente);
                     actualPretendienteDeOferentes[oferente] = pretendiente;
                 } else {
                     // No encontré pareja, el pretendiente sigue libre
