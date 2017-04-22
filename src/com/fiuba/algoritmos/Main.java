@@ -19,7 +19,7 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         // TODO: obtener opcion por línea de comandos
-        int opcion = 1;
+        int opcion = 3;
 
         switch(opcion) {
             case 0:
@@ -35,7 +35,7 @@ public class Main {
         }
 
         System.out.println("Fin!");
-        System.in.read();
+       // System.in.read();
     }
 
     public static void resolveMarriages() {
@@ -86,7 +86,9 @@ public class Main {
     }
 
     public static void resolveKosaraju() {
-        Path path = Paths.get("data/Kosaraju/d6.txt");
-        Kosaraju k = new Kosaraju(path);
+        for(int i=1;i<7;i++) {
+            Path path = Paths.get("data/Kosaraju/d"+String.valueOf(i)+".txt");
+            Kosaraju k = new Kosaraju(path);
+        }
     }
 }
