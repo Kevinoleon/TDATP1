@@ -1,16 +1,14 @@
 package com.fiuba.algoritmos;
 
-import com.fiuba.grafos.Arista;
 import com.fiuba.grafos.Grafo;
-import com.fiuba.grafos.Digrafo;
 import com.fiuba.tarjan.Tarjan;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
@@ -18,27 +16,48 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        // TODO: obtener opcion por línea de comandos
-        int opcion = 1;
+        System.out.println("------------------------------------");
+        System.out.println("\uD83D\uDE80 \uD83D\uDE80 TP1 Teoría de Algoritmos \uD83D\uDE80 \uD83D\uDE80");
+        System.out.println("------------------------------------");
+        System.out.println();
+        System.out.println("Elige el algoritmo a correr:");
+        System.out.println();
+        System.out.println("1. Asignación de residencias");
+        System.out.println("2. Puntos de falla");
+        System.out.println("3. Comunidades en redes");
+        System.out.println();
+
+        Scanner scanner = new Scanner(System.in);
+        int opcion = Integer.parseInt(scanner.nextLine());
+        System.out.println();
 
         switch(opcion) {
-            case 0:
-                resolveMarriages();
-                break;
             case 1:
-                resolveTarjan();
+                System.out.println("Asignación de residencias");
+                System.out.println("-------------------------");
+                System.out.println();
+                resolveResidences();
                 break;
             case 2:
+                System.out.println("Puntos de Falla");
+                System.out.println("---------------");
+                System.out.println();
+                resolveTarjan();
+                break;
+            case 3:
             default:
+                System.out.println("Comunidades en redes");
+                System.out.println("--------------------");
+                System.out.println();
                 resolveKosaraju();
                 break;
         }
 
-        System.out.println("Fin!");
-        System.in.read();
+        System.out.println();
+        System.out.println("\uD83D\uDC7E \uD83D\uDC7E Fin! \uD83D\uDC7E \uD83D\uDC7E");
     }
 
-    public static void resolveMarriages() {
+    public static void resolveResidences() {
 
     }
 
@@ -77,6 +96,8 @@ public class Main {
                 } catch(Error e) {
                     System.out.println("Error al recorrer grafo: " + e.getMessage());
                 }
+
+                System.out.println();
 
             } catch(IOException e) {
                 System.out.println("Excepción al leer archivo" + nombreArchivo);
