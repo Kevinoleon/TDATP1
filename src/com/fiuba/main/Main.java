@@ -1,6 +1,7 @@
-package com.fiuba.algoritmos;
+package com.fiuba.main;
 
 import com.fiuba.grafos.Grafo;
+import com.fiuba.kosaraju.Kosaraju;
 import com.fiuba.tarjan.Tarjan;
 
 import java.io.IOException;

@@ -1,5 +1,6 @@
 package com.fiuba.grafos;
 
+import com.fiuba.kosaraju.RecorredorDeGrafo;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -86,7 +87,7 @@ public class DigrafoTest {
         d.agregarArista(1, 2);
 
         //Componentes conexas 0->1->2 y 3
-        ArrayList<ArrayList<Integer>> componentesConexas = d.DFS(null, null);
+        ArrayList<ArrayList<Integer>> componentesConexas = new RecorredorDeGrafo(d).DFS(null, null);
 
         assertEquals(Integer.valueOf(2), (Integer) componentesConexas.size());
         //Chequeo Componente 1
@@ -111,7 +112,7 @@ public class DigrafoTest {
         orden.add(1);
         orden.add(2);
         //Componentes conexas 0->1->2 y 3
-        ArrayList<ArrayList<Integer>> componentesConexas = d.DFS(null, orden);
+        ArrayList<ArrayList<Integer>> componentesConexas = new RecorredorDeGrafo(d).DFS(null, orden);
 
         assertEquals(Integer.valueOf(2), (Integer) componentesConexas.size());
         //Chequeo Componente 1

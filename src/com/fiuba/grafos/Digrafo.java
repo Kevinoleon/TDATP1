@@ -77,74 +77,12 @@ public class Digrafo {
         return existe;
     }
 
-    /**
-     * Devuelve una lista con los vertices visitados desde el src
-     *
-     * @param src Si es null inicia del vertice 0, si es mayor o igual a cuentaVertices devuelve null
-     * @param ordenDeVertices Opcional, indica el orden en que se deben recorrer los vertices al terminar la
-     *                        exploracion de todos los caminos posibles del vertice actual.
-     * @return Devuelve una lista de listas de vertices. Cada lista es una compponente conexa visitada con DFS
-     */
-    public ArrayList<ArrayList<Integer>> DFS(Integer src, ArrayList<Integer> ordenDeVertices) {
-
-        if (src == null)
-            src = (ordenDeVertices != null) ? ordenDeVertices.get(0) : 0;
-
-        if (ordenDeVertices != null && ordenDeVertices.size() != this.cuentaDeVertices())
-            ordenDeVertices = null;
-
-        if (src >= this.cuentaDeVertices())
-            return null;
-
-        ArrayList<ArrayList<Integer>> listaVerticesVisitados = new ArrayList<>();
-        boolean[] verticeVisitado = new boolean[this.cuentaDeVertices()];
-
-        //Hago DFS desde el vertice indicado
-        ArrayList<Integer> componenteConexa1 = new ArrayList<>();
-        listaVerticesVisitados.add(componenteConexa1);
-        DFS_Visitar(src, componenteConexa1, verticeVisitado);
-
-        //Hago DFS desde los demas vertices
-        for (int i = 0; i < this.cuentaDeVertices(); i++) {
-            //Si hay orden de vertices voy chequeando en ese orden, sino orden natural.
-            int proximoVertice = (ordenDeVertices != null) ? ordenDeVertices.get(i) : i;
-
-            if (!verticeVisitado[proximoVertice]) {
-                ArrayList<Integer> componenteConexa = new ArrayList<>();
-                listaVerticesVisitados.add(componenteConexa);
-                DFS_Visitar(proximoVertice, componenteConexa, verticeVisitado);
-            }
-
-        }
-        return listaVerticesVisitados;
-    }
-
-    public ArrayList<ArrayList<Integer>> DFS() {
-        return DFS(null, null);
-    }
-
-    private void DFS_Visitar(Integer v, ArrayList<Integer> listaVerticesVisitados, boolean[] verticeVisitado) {
-
-        verticeVisitado[v] = true;
-        listaVerticesVisitados.add(v);
-
-        //El orden de visita depende de este iterador
-        Iterator<Arista> it = this.getAdjList(v);
-        while (it.hasNext()) {
-            Arista a = it.next();
-            if (!verticeVisitado[a.getDst()]) {
-                DFS_Visitar(a.getDst(), listaVerticesVisitados, verticeVisitado);
-            }
-        }
-    }
-
     public Digrafo transponer() {
-        Digrafo d = new Digrafo(cuentaVertices);
+        Digrafo d = new Digrafo(this.cuentaDeVertices());
 
-        for (int src = 0; src < cuentaVertices; src++) {
-            //System.out.println("Transponiendo vertice: " + src);
-            for (int dst = 0; dst < cuentaVertices; dst++) {
-                if (!existeArista(src, dst))
+        for (int src = 0; src < this.cuentaDeVertices(); src++) {
+            for (int dst = 0; dst < this.cuentaDeVertices(); dst++) {
+                if (!this.existeArista(src, dst))
                     d.agregarArista(src, dst);
             }
         }
@@ -152,11 +90,11 @@ public class Digrafo {
     }
 
     public Digrafo invertirArcos() {
-        Digrafo d = new Digrafo(cuentaVertices);
+        Digrafo d = new Digrafo(this.cuentaDeVertices());
 
-        for (int i = 0; i < cuentaVertices; i++) {
+        for (int i = 0; i < this.cuentaDeVertices(); i++) {
             //System.out.println("Transponiendo vertice: " + i);
-            Iterator<Arista> it = getAdjList(i);
+            Iterator<Arista> it = this.getAdjList(i);
             while (it.hasNext()) {
                 Arista aux = it.next();
                 d.agregarArista(aux.getDst(), aux.getSrc());

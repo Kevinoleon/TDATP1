@@ -46,8 +46,4 @@ public class Grafo {
         this.digrafo.agregarArista(src, dest);
         this.digrafo.agregarArista(dest, src);
     }
-
-    public Boolean existeArista(int src, int dest) {
-        return this.digrafo.existeArista(src, dest) && this.digrafo.existeArista(dest, src);
-    }
 }
