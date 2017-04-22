@@ -64,12 +64,11 @@ public class Main {
                 System.out.println((i + 1) + ": Grafo creado con " + grafo.getCantidadDeVertices() + " vertices y " + grafo.getCantidadDeAristas() + " aristas.");
 
                 try {
-                    Tarjan tarjan = new Tarjan(grafo);
-
                     long tiempoInicio = System.nanoTime();
+                    Tarjan tarjan = new Tarjan(grafo);
+                    long tiempoDelAlgoritmo = System.nanoTime() - tiempoInicio;
+
                     Set<Integer> puntosDeArticulacion = tarjan.getArticulationPoints();
-                    long tiempoFin = System.nanoTime();
-                    long tiempoDelAlgoritmo = tiempoFin - tiempoInicio;
 
                     System.out.println("Puntos de articulación: " + puntosDeArticulacion.toString());
                     System.out.println("Tiempo de algoritmo: " + TimeUnit.NANOSECONDS.toMillis(tiempoDelAlgoritmo) + " (ms) - " + tiempoDelAlgoritmo + "(ns)");
