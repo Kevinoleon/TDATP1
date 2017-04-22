@@ -1,5 +1,8 @@
 package com.fiuba.main;
 
+import com.fiuba.galeShapley.GaleShapley;
+import com.fiuba.galeShapley.HospitalRandomizer;
+import com.fiuba.galeShapley.Randomizer;
 import com.fiuba.grafos.Grafo;
 import com.fiuba.kosaraju.Kosaraju;
 import com.fiuba.tarjan.Tarjan;
@@ -59,6 +62,19 @@ public class Main {
     }
 
     public static void resolveResidences() {
+        System.out.println("Cantidad de Estudiantes: ");
+        Scanner scanner1 = new Scanner(System.in);
+        int est = Integer.parseInt(scanner1.nextLine());
+        System.out.println("Cantidad de Hospitales: ");
+        Scanner scanner = new Scanner(System.in);
+        int hosp = Integer.parseInt(scanner.nextLine());
+
+        HospitalRandomizer hR = new HospitalRandomizer(est, hosp);
+        String filename = "Hospitales.txt";
+        hR.toFiles(filename);
+        System.out.println("Se genero file: " + filename);
+
+
 
     }
 
