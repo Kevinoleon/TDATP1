@@ -106,7 +106,9 @@ public class Main {
     }
 
     public static void resolveKosaraju() {
-        Path path = Paths.get("data/Kosaraju/d6.txt");
-        Kosaraju k = new Kosaraju(path);
+        for(int i=1;i<7;i++) {
+            Path path = Paths.get("data/Kosaraju/d"+String.valueOf(i)+".txt");
+            Kosaraju k = new Kosaraju(path);
+        }
     }
 }
