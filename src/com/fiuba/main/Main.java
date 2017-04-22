@@ -31,6 +31,7 @@ public class Main {
         System.out.println("1. Asignación de residencias");
         System.out.println("2. Puntos de falla");
         System.out.println("3. Comunidades en redes");
+        System.out.println("4. Exportar Archivos Paciente - Hospitales");
         System.out.println();
 
         Scanner scanner = new Scanner(System.in);
