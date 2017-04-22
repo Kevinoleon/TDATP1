@@ -2,6 +2,8 @@ package com.fiuba.main;
 
 import com.fiuba.galeShapley.GaleShapley;
 import com.fiuba.galeShapley.HospitalRandomizer;
+import static com.fiuba.galeShapley.Randomizer.*;
+
 import com.fiuba.galeShapley.Randomizer;
 import com.fiuba.grafos.Grafo;
 import com.fiuba.kosaraju.Kosaraju;
@@ -49,19 +51,25 @@ public class Main {
                 resolveTarjan();
                 break;
             case 3:
-            default:
                 System.out.println("Comunidades en redes");
                 System.out.println("--------------------");
                 System.out.println();
                 resolveKosaraju();
                 break;
+            case 4:
+                System.out.println("Exportar Casos Estudiantes-Hospitales");
+                System.out.println("--------------------");
+                System.out.println();
+                exportResidencesInstance();
+                break;
+
         }
 
         System.out.println();
         System.out.println("\uD83D\uDC7E \uD83D\uDC7E Fin! \uD83D\uDC7E \uD83D\uDC7E");
     }
 
-    public static void resolveResidences() {
+    public static void exportResidencesInstance() {
         System.out.println("Cantidad de Estudiantes: ");
         Scanner scanner1 = new Scanner(System.in);
         int est = Integer.parseInt(scanner1.nextLine());
@@ -75,6 +83,18 @@ public class Main {
         System.out.println("Se genero file: " + filename);
 
 
+
+    }
+
+    public static void resolveResidences(){
+
+        for(int i=100;i<=10000;i*=10) {
+            long tiempoDelAlgoritmo = System.nanoTime();
+            GaleShapley gs = new GaleShapley(CreateRandomUniqueMatrix(i, i), CreateRandomUniqueMatrix(i, i));
+            tiempoDelAlgoritmo = System.nanoTime() - tiempoDelAlgoritmo;
+            System.out.println( "Gale Shapley n=m=" + String.valueOf(i) + ". Tiempo de Ejecucion: " +
+                                TimeUnit.NANOSECONDS.toMillis(tiempoDelAlgoritmo) + " mSeg.");
+        }
 
     }
 
