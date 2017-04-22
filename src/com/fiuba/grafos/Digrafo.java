@@ -22,10 +22,11 @@ public class Digrafo {
     private int cuentaVertices;
 
     public Digrafo(int vertices) {
-        adjList = new ArrayList<>(vertices);
-        cuentaVertices = vertices;
+        this.adjList = new ArrayList<>(vertices);
+        this.cuentaVertices = vertices;
+
         for (int i = 0; i < vertices; i++) {
-            adjList.add(new HashMap<>());
+            this.adjList.add(new HashMap<>());
         }
     }
 
